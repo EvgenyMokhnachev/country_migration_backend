@@ -1,0 +1,14 @@
+version: "3.3"
+
+services:
+
+  backend_db:
+    image: postgres:13
+    container_name: ${COMPOSE_PROJECT_NAME}_backend_db
+    restart: unless-stopped
+    ports:
+      - ${DB_PORT}:5432
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}

@@ -10,6 +10,7 @@ import ru.sfedu.ictis.mohnachev.countrymigration.domain.movement.UserBorderMovem
 import ru.sfedu.ictis.mohnachev.countrymigration.domain.movement.UserBorderMovementFilter;
 import ru.sfedu.ictis.mohnachev.countrymigration.domain.movement.UserBorderMovementRepository;
 import ru.sfedu.ictis.mohnachev.countrymigration.domain.movement.UserBorderMovementCalculator;
+import ru.sfedu.ictis.mohnachev.countrymigration.persistance.pgsql.Pagination;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,7 +41,7 @@ class UserBorderMovementCalculatorTest {
         Mockito.lenient().when(
                 userBorderMovementRepository.get(userBorderMovementFilter)
         ).thenReturn(
-                List.of(
+                new Pagination<>(List.of(
                         new UserBorderMovement(1L, testUserId,
                                 sdf.parse("01/01/2022"),
                                 sdf.parse("01/01/2022")),
@@ -62,7 +63,7 @@ class UserBorderMovementCalculatorTest {
                         new UserBorderMovement(3L, testUserId,
                                 sdf.parse("22/01/2022"),
                                 sdf.parse("22/01/2022"))
-                )
+                ), 6L)
         );
 
         Map<Long, Integer> travelHistory

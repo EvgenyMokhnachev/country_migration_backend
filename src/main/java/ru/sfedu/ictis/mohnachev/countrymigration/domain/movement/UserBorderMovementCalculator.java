@@ -61,6 +61,7 @@ public class UserBorderMovementCalculator {
                     : movementB.getExitDate();
 
             result.add(new UserBorderMovement(
+                    movementA.getId() > movementB.getId() ? movementB.getId() : movementA.getId(),
                     movementA.getCountryId(),
                     movementA.getUserId(),
                     enterDate,
@@ -81,7 +82,7 @@ public class UserBorderMovementCalculator {
         List<UserBorderMovement> userBorderMovements = normalizeTravelsListByDate(
                 userBorderMovementRepository.get(
                         UserBorderMovementFilter.create().byUserId(userId)
-                )
+                ).getList()
         );
 
         for (UserBorderMovement userBorderMovement : userBorderMovements) {
