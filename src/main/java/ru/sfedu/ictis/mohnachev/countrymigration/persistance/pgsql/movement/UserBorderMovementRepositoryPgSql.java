@@ -32,4 +32,9 @@ public class UserBorderMovementRepositoryPgSql implements UserBorderMovementRepo
         return item;
     }
 
+    @Override
+    public void delete(Long id) {
+        jpaPgSql.deleteById(id);
+    }
+
 }

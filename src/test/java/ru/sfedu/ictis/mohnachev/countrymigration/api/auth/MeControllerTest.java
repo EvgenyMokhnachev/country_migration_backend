@@ -9,10 +9,10 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.auth.requests.AuthRequest;
-import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.auth.requests.MeRequest;
-import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.auth.responses.AuthResponse;
-import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.auth.responses.UserResponse;
+import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.requests.AuthRequest;
+import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.requests.MeRequest;
+import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.responses.AuthResponse;
+import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.responses.UserResponse;
 
 import java.util.UUID;
 

@@ -21,4 +21,9 @@ public class UserBorderMovementFilter extends BaseGetListFilter<UserBorderMoveme
         return this;
     }
 
+    public UserBorderMovementFilter byId(Long id) {
+        this.ids = List.of(id);
+        return this;
+    }
+
 }

@@ -91,13 +91,24 @@ public class UserBorderMovementCalculator {
                     ? userBorderMovement.getExitDate()
                     : new Date();
 
-            if (from != null && exitDate.before(from)) {
+            if (from != null && enterDate.before(from) && exitDate.before(from)) {
                 continue;
             }
 
-            if (to != null && enterDate.after(to)) {
+            if (to != null && enterDate.after(to) && exitDate.after(to)) {
                 continue;
             }
+
+            // |-------|enter|before|------|from|-------|exit|after|--------|
+            if (from != null && enterDate.before(from) && exitDate.after(from)) {
+                enterDate = from;
+            }
+
+            // |-------|enter|before|------|to|-------|exit|after|--------|
+            if (to != null && enterDate.before(to) && exitDate.after(to)) {
+                exitDate = to;
+            }
+
 
             long diffInMs = Math.abs(exitDate.getTime() - enterDate.getTime());
             long diffInDays = TimeUnit.DAYS.convert(diffInMs, TimeUnit.MILLISECONDS) + 1;

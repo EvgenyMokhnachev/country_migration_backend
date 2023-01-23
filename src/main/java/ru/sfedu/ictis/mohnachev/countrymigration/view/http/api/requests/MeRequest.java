@@ -1,4 +1,4 @@
-package ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.auth.requests;
+package ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.requests;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

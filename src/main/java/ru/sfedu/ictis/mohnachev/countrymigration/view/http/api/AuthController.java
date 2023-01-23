@@ -1,4 +1,4 @@
-package ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.auth;
+package ru.sfedu.ictis.mohnachev.countrymigration.view.http.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.sfedu.ictis.mohnachev.countrymigration.domain.auth.AuthService;
 import ru.sfedu.ictis.mohnachev.countrymigration.domain.auth.exceptions.PasswordIsInvalidException;
 import ru.sfedu.ictis.mohnachev.countrymigration.domain.auth.exceptions.PasswordIsWrongException;
-import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.auth.requests.AuthRequest;
-import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.auth.responses.AuthResponse;
+import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.requests.AuthRequest;
+import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.responses.AuthResponse;
 
 @RestController
 public class AuthController {
