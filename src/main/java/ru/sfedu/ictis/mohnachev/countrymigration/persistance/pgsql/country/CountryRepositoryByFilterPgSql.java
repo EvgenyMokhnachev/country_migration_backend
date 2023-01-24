@@ -1,8 +1,8 @@
-package ru.sfedu.ictis.mohnachev.countrymigration.persistance.pgsql.user;
+package ru.sfedu.ictis.mohnachev.countrymigration.persistance.pgsql.country;
 
 import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
-import ru.sfedu.ictis.mohnachev.countrymigration.domain.user.UserFilter;
+import ru.sfedu.ictis.mohnachev.countrymigration.domain.country.CountryFilter;
 import ru.sfedu.ictis.mohnachev.countrymigration.persistance.pgsql.BasePgSqlRepository;
 import ru.sfedu.ictis.mohnachev.countrymigration.persistance.pgsql.BaseQuery;
 import ru.sfedu.ictis.mohnachev.countrymigration.persistance.pgsql.OrderDirection;
@@ -11,13 +11,13 @@ import ru.sfedu.ictis.mohnachev.countrymigration.persistance.pgsql.Pagination;
 import java.util.List;
 
 @Repository
-public class UserRepositoryByFilterPgSql extends BasePgSqlRepository<UserPgSql, UserFilter> {
+public class CountryRepositoryByFilterPgSql extends BasePgSqlRepository<CountryPgSql, CountryFilter> {
 
-    private static final String FROM = "cmp.users";
-    private static final String AS = "u";
+    private static final String FROM = "cmp.countries";
+    private static final String AS = "c";
 
     @Override
-    public Pagination<UserPgSql> getByFilter(UserFilter filter) {
+    public Pagination<CountryPgSql> getByFilter(CountryFilter filter) {
         if (filter.getLimit() == null && filter.getIds() != null && !filter.getIds().isEmpty()) {
             filter.setLimit(filter.getIds().size());
         }
@@ -33,31 +33,24 @@ public class UserRepositoryByFilterPgSql extends BasePgSqlRepository<UserPgSql, 
         baseQuery.setOptimizedSelectForTotalQuery(String.format("%s.id", AS));
 
         filterByIds(filter.getIds(), baseQuery);
-        filterByEmails(filter.getEmails(), baseQuery);
 
         injectOrders(filter, baseQuery);
 
         String sql = buildNativeSqlQuery(baseQuery);
-        Query query = entityManager.createNativeQuery(sql, UserPgSql.class);
+        Query query = entityManager.createNativeQuery(sql, CountryPgSql.class);
         injectParameters(query, baseQuery.getParameters());
-        List<UserPgSql> items = query.getResultList();
+        List<CountryPgSql> items = query.getResultList();
 
         return new Pagination<>(items, getTotal(baseQuery));
     }
 
     private void filterByIds(List<Long> ids, BaseQuery query) {
         if (ids == null || ids.isEmpty()) return;
-        query.addParameter("filterIds", ids);
-        query.addWheres(String.format(" AND (%1$s.id IN :filterIds)", AS));
+        query.addParameter("filterByIds", ids);
+        query.addWheres(String.format(" AND (%1$s.id IN :filterByIds)", AS));
     }
 
-    private void filterByEmails(List<String> emails, BaseQuery query) {
-        if (emails == null || emails.isEmpty()) return;
-        query.addParameter("filterByEmails", emails);
-        query.addWheres(String.format(" AND (%1$s.email IN :filterByEmails)", AS));
-    }
-
-    private void injectOrders(UserFilter filter, BaseQuery query) {
+    private void injectOrders(CountryFilter filter, BaseQuery query) {
         if (filter == null) return;
         orderById(OrderDirection.DESK, query);
     }

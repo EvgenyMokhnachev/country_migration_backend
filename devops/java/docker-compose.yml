@@ -1,0 +1,20 @@
+version: "3.3"
+
+services:
+
+  java:
+    container_name: ${COMPOSE_PROJECT_NAME}_java
+    build:
+      context: ./../../
+      dockerfile: ./devops/java/Dockerfile
+    ports:
+      - ${JAVA_EXPOSE_PORT}:8080
+    env_file:
+      - ./../../.env
+    restart: unless-stopped
+    networks:
+      - country_migrations_network
+    command: java -Djava.security.egd=file:/dev/./urandom -jar /project/boot-0.0.1-SNAPSHOT.jar
+
+networks:
+  country_migrations_network:

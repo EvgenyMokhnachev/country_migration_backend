@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MovementsCalculateRequest extends Authenticated {
+public class MovementsGetRequest extends Authenticated<MovementsGetRequest> {
     private Date from;
     private Date to;
 }

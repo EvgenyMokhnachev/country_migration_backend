@@ -13,7 +13,7 @@ import ru.sfedu.ictis.mohnachev.countrymigration.api.auth.AuthGenerator;
 import ru.sfedu.ictis.mohnachev.countrymigration.domain.auth.Auth;
 import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.requests.MovementCreateRequest;
 import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.requests.MovementDeleteRequest;
-import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.requests.MovementsCalculateRequest;
+import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.requests.MovementsGetRequest;
 import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.responses.UserBorderMovementResponse;
 import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.responses.UserTravelHistoryResponse;
 
@@ -115,7 +115,7 @@ class UserBorderMovementCrudTest {
 
         ResponseEntity<UserTravelHistoryResponse> travelHistoryResponse = this.restTemplate.postForEntity(
                 "http://localhost:" + port + "/movement/calculate",
-                new MovementsCalculateRequest(
+                new MovementsGetRequest(
                                 sdf.parse("05/01/2022"),
                                 sdf.parse("15/01/2022")
                 ).setToken(auth.getToken()),

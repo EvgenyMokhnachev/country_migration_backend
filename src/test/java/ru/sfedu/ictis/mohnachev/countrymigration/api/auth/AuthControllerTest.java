@@ -26,7 +26,7 @@ public class AuthControllerTest {
 
     @Test
     public void fullAuthTest() throws Exception {
-        String email = UUID.randomUUID().toString() + "@sfedu.ru";
+        String email = UUID.randomUUID().toString() + "fullAuthTest" + "@sfedu.ru";
         String pass = UUID.randomUUID().toString();
 
         AuthResponse firstLogin = this.restTemplate

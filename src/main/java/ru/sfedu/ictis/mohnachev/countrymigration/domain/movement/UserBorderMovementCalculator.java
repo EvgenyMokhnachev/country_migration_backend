@@ -60,8 +60,13 @@ public class UserBorderMovementCalculator {
                     ? movementA.getExitDate()
                     : movementB.getExitDate();
 
+            Long movementId = null;
+            try {
+                movementId = movementA.getId() > movementB.getId() ? movementB.getId() : movementA.getId();
+            } catch (NullPointerException ignore) {}
+
             result.add(new UserBorderMovement(
-                    movementA.getId() > movementB.getId() ? movementB.getId() : movementA.getId(),
+                    movementId,
                     movementA.getCountryId(),
                     movementA.getUserId(),
                     enterDate,
@@ -100,12 +105,12 @@ public class UserBorderMovementCalculator {
             }
 
             // |-------|enter|before|------|from|-------|exit|after|--------|
-            if (from != null && enterDate.before(from) && exitDate.after(from)) {
+            if (from != null && enterDate.before(from) && exitDate.getTime() >= from.getTime()) {
                 enterDate = from;
             }
 
             // |-------|enter|before|------|to|-------|exit|after|--------|
-            if (to != null && enterDate.before(to) && exitDate.after(to)) {
+            if (to != null && (enterDate.getTime() <= to.getTime()) && exitDate.after(to)) {
                 exitDate = to;
             }
 

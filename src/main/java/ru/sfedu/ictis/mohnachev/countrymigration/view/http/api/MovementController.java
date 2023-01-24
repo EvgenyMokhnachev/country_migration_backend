@@ -7,14 +7,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sfedu.ictis.mohnachev.countrymigration.domain.auth.Auth;
 import ru.sfedu.ictis.mohnachev.countrymigration.domain.auth.exceptions.AuthNotFoundException;
-import ru.sfedu.ictis.mohnachev.countrymigration.domain.movement.UserBorderMovementCalculator;
-import ru.sfedu.ictis.mohnachev.countrymigration.domain.movement.UserBorderMovementCrudService;
+import ru.sfedu.ictis.mohnachev.countrymigration.domain.movement.*;
 import ru.sfedu.ictis.mohnachev.countrymigration.domain.movement.exceptions.UserBorderMovementNotFoundException;
+import ru.sfedu.ictis.mohnachev.countrymigration.persistance.pgsql.Pagination;
 import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.requests.MovementCreateRequest;
 import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.requests.MovementDeleteRequest;
-import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.requests.MovementsCalculateRequest;
-import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.responses.UserBorderMovementResponse;
-import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.responses.UserTravelHistoryResponse;
+import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.requests.MovementsGetRequest;
+import ru.sfedu.ictis.mohnachev.countrymigration.view.http.api.responses.*;
+
+import java.util.List;
 
 @RestController
 public class MovementController extends AuthenticatedController {
@@ -23,7 +24,31 @@ public class MovementController extends AuthenticatedController {
     UserBorderMovementCrudService crudService;
 
     @Autowired
+    UserBorderMovementRepository userBorderMovementRepository;
+
+    @Autowired
     UserBorderMovementCalculator calculator;
+
+    @PostMapping( "/movement/get")
+    private @ResponseBody PaginationResponse<MovementResponse> create(
+            @RequestBody MovementsGetRequest request
+    ) throws AuthNotFoundException {
+        Auth auth = this.isAuthenticated(request);
+
+        UserBorderMovementFilter filter = UserBorderMovementFilter.create();
+
+        Pagination<UserBorderMovement> pagination = crudService.get(
+                filter,
+                auth.getUserId()
+        );
+
+        List<MovementResponse> movementResponses = pagination.getList()
+                .stream()
+                .map(MovementResponse::new)
+                .toList();
+
+        return new PaginationResponse<>(movementResponses, pagination.getTotal());
+    }
 
     @PostMapping( "/movement/create")
     private @ResponseBody UserBorderMovementResponse create(
@@ -42,7 +67,7 @@ public class MovementController extends AuthenticatedController {
     }
 
     @PostMapping( "/movement/delete")
-    private void delete(
+    private @ResponseBody MovementDeleteResponse delete(
             @RequestBody MovementDeleteRequest request
     ) throws
             AuthNotFoundException,
@@ -51,14 +76,16 @@ public class MovementController extends AuthenticatedController {
         Auth auth = this.isAuthenticated(request);
 
         crudService.delete(
-                auth.getUserId(),
-                request.getMovementId()
+                request.getMovementId(),
+                auth.getUserId()
         );
+
+        return new MovementDeleteResponse();
     }
 
     @PostMapping( "/movement/calculate")
     private @ResponseBody UserTravelHistoryResponse delete(
-            @RequestBody MovementsCalculateRequest request
+            @RequestBody MovementsGetRequest request
     ) throws
             AuthNotFoundException
     {

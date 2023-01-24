@@ -5,10 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MovementDeleteRequest extends Authenticated<MovementDeleteRequest> {
-    private Long movementId;
+public class CountryGetRequest extends Authenticated<CountryGetRequest> {
+    private List<Long> ids;
 }
